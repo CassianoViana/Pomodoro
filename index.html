@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Pomodoro</title>
+	<style type="text/css">
+		html, body {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			background: green;
+			color: white;
+			-webkit-app-region: drag;
+		}
+		h1 {
+			margin: 0;
+		}
+		button, input {
+		    -webkit-app-region: no-drag !important;
+		}
+		button {
+			background: none;
+			color: white;
+			border: 1px solid white;
+		}
+		.content{
+			text-align: center;
+			display: flex;
+			flex-flow: column;
+			justify-content: center;
+			padding: 10px;
+		}
+		.buttons{
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<h1 id="tempo">Pomodoro</h1>
+		<div class="buttons">
+			<button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
+			<button id="btnPausa" onclick="pausa()">Pausa</button>
+			<button id="btnPausa" onclick="pausaCurta()">Pausa curta</button>
+			<button id="btnPausa" onclick="abrirTarefas()">Tasks</button>
+		</div>
+	</div>
+</body>
+<script>
+	const { ipcRenderer } = require('electron');
+	var tempo = 25;
+	var interval = null;
+	var estado = null;
+
+	var estados = {
+		pomodoro: {
+			tempo: 25,
+			cor: '#313131',
+			proximoEstado: 'pausa',
+			funcao: abrirTarefas
+		},
+		pausa: {
+			tempo: 5,
+			cor: '#987900',
+			proximoEstado: 'pomodoro',
+			funcao: abrirRecreio
+		},
+		pausaCurta: {
+			tempo: 1,
+			cor: 'green',
+			proximoEstado: 'pomodoro',
+		}
+	};
+
+	function contaTempo(){
+		console.log(tempo);
+		let minutos = tempo / 60;
+		let segundos = ((minutos) - (parseInt(minutos))) * 60;
+		let conteudo;
+		if(minutos < 3){
+			conteudo = parseInt(minutos) + ':' + parseInt(segundos);
+		}else{
+			conteudo = parseInt(minutos);
+		}
+		document.getElementById('tempo').innerHTML = conteudo;
+		if(tempo == 0){
+			tocar();
+			setEstado(estados[estado.proximoEstado]);
+		}
+		tempo--;
+	}
+	
+	function setColor(color){
+		document.body.style.backgroundColor = color;
+	}
+
+	function setEstado(e){
+		estado = e;
+		contarMinutos(e.tempo);
+		setColor(e.cor);
+		if(e.funcao){e.funcao()}
+	}
+
+	function contarMinutos(minutos){
+		clearInterval(interval);
+		tempo = minutos * 60
+		interval = setInterval(contaTempo, 1000);
+	}
+
+	function reiniciar(){
+		setEstado(estados.pomodoro);
+	}
+
+	function pausa(){
+		setEstado(estados.pausa);
+	}
+
+	function pausaCurta(){
+		setEstado(estados.pausaCurta);
+	}
+
+	function tocar(){
+		var audio = new Audio('alarm.wav');
+		audio.play();
+		abrirTarefas();
+	}
+
+	function abrirTarefas(){
+		ipcRenderer.send('open-tasks');
+	}
+
+	function abrirRecreio(){
+		ipcRenderer.send('open-recreation');	
+	}
+
+	reiniciar();
+</script>
+</html>

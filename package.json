@@ -1,0 +1,14 @@
+{
+  "name": "pomodoro",
+  "version": "1.0.0",
+  "description": "Relógio pomodoro",
+  "main": "main.js",
+  "scripts": {
+    "start": "./node_modules/electron/dist/electron ."
+  },
+  "author": "Cassiano",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  }
+}
