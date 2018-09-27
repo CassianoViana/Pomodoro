@@ -5,24 +5,28 @@
 	<title>Pomodoro</title>
 	<style type="text/css">
 		html, body {
+			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 			width: 100%;
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			background: green;
 			color: white;
 			-webkit-app-region: drag;
+			border-radius: 5px;
 		}
 		h1 {
 			margin: 0;
+			font-size: 20px;
 		}
 		button, input {
 		    -webkit-app-region: no-drag !important;
 		}
 		button {
-			background: none;
-			color: white;
-			border: 1px solid white;
+			background: white;
+			color: tomato;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
 		}
 		.content{
 			text-align: center;
@@ -36,16 +40,31 @@
 			flex-flow: row nowrap;
 			justify-content: space-between;
 		}
+		input{
+			background: transparent;
+			border: none;
+			color: white;
+			text-align: right;
+		}
+		.top{
+			margin-bottom: 3px;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+		}
 	</style>
 </head>
 <body>
 	<div class="content">
-		<h1 id="tempo">Pomodoro</h1>
+		<div class="top">
+			<h1 id="tempo">Pomodoro</h1><input type="text">
+		</div>
 		<div class="buttons">
-			<button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
-			<button id="btnPausa" onclick="pausa()">Pausa</button>
-			<button id="btnPausa" onclick="pausaCurta()">Pausa curta</button>
+			<button id="btnReiniciar" onclick="reiniciar()">Pomo</button>
+			<button id="btnPausa" onclick="pausa()">Breath</button>
+			<button id="btnPausa" onclick="pausaLonga()">Break</button>
 			<button id="btnPausa" onclick="abrirTarefas()">Tasks</button>
+			<button id="btnPausa" onclick="abrirRecreio()">News</button>
 		</div>
 	</div>
 </body>
@@ -63,14 +82,13 @@
 			funcao: abrirTarefas
 		},
 		pausa: {
-			tempo: 5,
-			cor: '#987900',
+			tempo: 2,
+			cor: 'tomato',
 			proximoEstado: 'pomodoro',
-			funcao: abrirRecreio
 		},
-		pausaCurta: {
-			tempo: 1,
-			cor: 'green',
+		pausaLonga: {
+			tempo: 5,
+			cor: 'teal',
 			proximoEstado: 'pomodoro',
 		}
 	};
@@ -95,6 +113,7 @@
 	
 	function setColor(color){
 		document.body.style.backgroundColor = color;
+		for(i of document.getElementsByTagName('button')){console.log(i.style.color = color)}
 	}
 
 	function setEstado(e){
@@ -118,12 +137,12 @@
 		setEstado(estados.pausa);
 	}
 
-	function pausaCurta(){
-		setEstado(estados.pausaCurta);
+	function pausaLonga(){
+		setEstado(estados.pausaLonga);
 	}
 
 	function tocar(){
-		var audio = new Audio('alarm.wav');
+		var audio = new Audio('guittar.mp3');
 		audio.play();
 		abrirTarefas();
 	}

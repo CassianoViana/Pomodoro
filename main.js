@@ -42,7 +42,7 @@ function openRecreationWindow(){
 function createWindow(){
 	mainWindow = new BrowserWindow({
 		width: 300,
-		height: 80,
+		height: 70,
 		frame:false,
 		//resizable:false
 	});
@@ -56,7 +56,6 @@ function createWindow(){
 
 function createTasksWindow(){
 	tasksWindow = new BrowserWindow({
-		frame: false,
 		show: false,
 	});
 	tasksWindow.setMenu(null);
