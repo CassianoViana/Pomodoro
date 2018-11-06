@@ -41,8 +41,8 @@ function openRecreationWindow(){
 
 function createWindow(){
 	mainWindow = new BrowserWindow({
-		width: 300,
-		height: 70,
+		width: 70,
+		height: 150,
 		frame:false,
 		//resizable:false
 	});
@@ -57,6 +57,10 @@ function createWindow(){
 function createTasksWindow(){
 	tasksWindow = new BrowserWindow({
 		show: false,
+		width: 300,
+		height: 600,
+		x: 0,
+		y: 0,
 	});
 	tasksWindow.setMenu(null);
 	tasksWindow.loadURL('https://mail.google.com/tasks/canvas');
